@@ -6,7 +6,8 @@ import BadgeForm from "../components/BadgeForm";
 import Loader from "../components/Loader";
 import api from "../api";
 import { Link } from "react-router-dom";
-class BadgeNew extends React.Component {
+
+class BadgeEdit extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -19,8 +20,33 @@ class BadgeNew extends React.Component {
       jobTitle: "",
       socialUser: ""
     },
-    loading: false,
+    loading: true,
     error: null
+  };
+
+  componentDidMount() {
+    this.fetchData();
+  }
+
+  fetchData = async () => {
+    this.setState({
+      loading: true,
+      error: null
+    });
+
+    try {
+      const data = await api.badges.read(this.props.match.params.badgeId);
+
+      this.setState({
+        loading: false,
+        form: data
+      });
+    } catch (error) {
+      this.setState({
+        loading: false,
+        error: error
+      });
+    }
   };
 
   handleSubmit = async e => {
@@ -31,7 +57,7 @@ class BadgeNew extends React.Component {
     });
 
     try {
-      await api.badges.create(this.state.form);
+      await api.badges.update(this.props.match.params.badgeId, this.state.form);
 
       this.setState({
         loading: false,
@@ -59,6 +85,10 @@ class BadgeNew extends React.Component {
   };
 
   render() {
+    if (this.state.loading) {
+      return <Loader />;
+    }
+
     return (
       <React.Fragment>
         <div className="BadgeNew__hero">
@@ -81,24 +111,18 @@ class BadgeNew extends React.Component {
                 avatarUrl="https://es.gravatar.com/avatar?d=identicon"
               />
               <Link className="btn btn-primary" to="/badges">
-                  Badges
+                Badges
               </Link>
             </div>
 
             <div className="col-6">
-              {this.state.loading ? (
-                <Loader />
-              ) : (
-                <React.Fragment>
-                <h1>New Attendant</h1>
-                <BadgeForm
-                  onChange={this.handleChange}
-                  onSubmit={this.handleSubmit}
-                  formValues={this.state.form}
-                  error={this.state.error}
-                />
-                </React.Fragment>
-              )}
+              <h1>Edit Attendant</h1>
+              <BadgeForm
+                onChange={this.handleChange}
+                onSubmit={this.handleSubmit}
+                formValues={this.state.form}
+                error={this.state.error}
+              />
             </div>
           </div>
         </div>
@@ -107,4 +131,4 @@ class BadgeNew extends React.Component {
   }
 }
 
-export default BadgeNew;
+export default BadgeEdit;

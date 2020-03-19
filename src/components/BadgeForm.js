@@ -1,18 +1,18 @@
 import React from "react";
 
 class BadgeForm extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
   handleClick = e => {
-    // Evitamos que se aplique el submit.
-    e.preventDefault();
     console.log("Button was clicked!");
   };
 
   render() {
     return (
       <div>
-        <h1>New Attendant</h1>
-
-        <form>
+        <form onSubmit={this.props.onSubmit}>
           <div className="form-group">
             <label>First Name</label>
             <input
@@ -71,6 +71,8 @@ class BadgeForm extends React.Component {
           <button onClick={this.handleClick} className="btn btn-primary">
             Save
           </button>
+
+          {this.props.error && <h5 className="text-danger">{this.props.error.message}</h5>}
         </form>
       </div>
     );
