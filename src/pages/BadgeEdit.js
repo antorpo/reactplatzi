@@ -6,6 +6,7 @@ import BadgeForm from "../components/BadgeForm";
 import Loader from "../components/Loader";
 import api from "../api";
 import { Link } from "react-router-dom";
+import PageError from "../components/PageError";
 
 class BadgeEdit extends React.Component {
   constructor(props) {
@@ -87,6 +88,10 @@ class BadgeEdit extends React.Component {
   render() {
     if (this.state.loading) {
       return <Loader />;
+    }
+
+    if(this.state.error){
+      return <PageError error={this.state.error.message} />;
     }
 
     return (

@@ -27,7 +27,7 @@ export default class Home extends Component {
               <img
                 src={astronautsImage}
                 alt="Astronauts"
-                className="img-fluid p-4"
+                className="img-fluid mb-2"
               />
             </div>
           </div>

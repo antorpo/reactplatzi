@@ -13,8 +13,7 @@ class Badge extends React.Component {
     const lastName = this.props.lastName;
     const jobTitle = this.props.jobTitle;
     const socialUser = this.props.socialUser;
-    const avatarUrl = this.props.avatarUrl;
-
+    
     return (
       <div className="Badge">
         <div className="Badge__header">
